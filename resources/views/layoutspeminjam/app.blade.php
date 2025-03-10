@@ -27,6 +27,13 @@
 <script src="{{ asset('AdminLTE/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('AdminLTE/dist/js/adminlte.min.js') }}"></script>
+<!-- jQuery -->
+<script src="{{ asset('AdminLTE/plugins/jquery/jquery.min.js') }}"></script>
+<!-- Bootstrap 4 -->
+<script src="{{ asset('AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 <script>
   $(document).ready(function () {
     $('.nav-sidebar').tree(); // Inisialisasi Treeview

@@ -6,49 +6,30 @@
         <div class="d-flex justify-content-between align-items-center mt-4">
             <h1>Rak Buku</h1>
         </div>
-
-        <!-- Filter Kategori -->
-        <div class="d-flex justify-content-center mb-4" id="kategoriWrapper">
-            <div id="kategoriSlider" class="d-flex" style="overflow: hidden; transition: transform 0.5s ease-in-out;">
-                <div class="d-flex flex-nowrap" id="slide1">
-                    <a href="{{ route('peminjam.rakbuku') }}" class="btn {{ request('kategori') ? 'btn-outline-primary' : 'btn-primary' }}">Semua</a>
-                    @foreach ($kategoriBuku->take(2) as $kategori)
-                    <a href="{{ route('peminjam.rakbuku', ['kategori' => $kategori->id_kategoribuku]) }}" 
-                       class="btn {{ request('kategori') == $kategori->id_kategoribuku ? 'btn-primary' : 'btn-outline-primary' }}">
-                        {{ ucfirst($kategori->kategori_buku) }}
-                    </a>
-                    @endforeach
-                </div>
-                <div class="d-flex flex-nowrap" id="slide2" style="display: none;">
-                    @foreach ($kategoriBuku->skip(2)->take(2) as $kategori)
-                    <a href="{{ route('peminjam.rakbuku', ['kategori' => $kategori->id_kategoribuku]) }}" 
-                       class="btn {{ request('kategori') == $kategori->id_kategoribuku ? 'btn-primary' : 'btn-outline-primary' }}">
-                        {{ ucfirst($kategori->kategori_buku) }}
-                    </a>
-                    @endforeach
-                </div>
-            </div>
-            <button class="btn btn-outline-primary" id="btnNext" onclick="slideKategori()">&gt;</button>
+        @if(session('success'))
+        <div class="alert alert-success text-center" role="alert">
+            {{ session('success') }}
         </div>
-
-        <script>
-            let slideIndex = 0;
-
-            function slideKategori() {
-                const slide1 = document.getElementById('slide1');
-                const slide2 = document.getElementById('slide2');
-
-                if (slideIndex === 0) {
-                    slide1.style.display = 'none';
-                    slide2.style.display = 'flex';
-                    slideIndex = 1;
-                } else {
-                    slide1.style.display = 'flex';
-                    slide2.style.display = 'none';
-                    slideIndex = 0;
-                }
-            }
-        </script>
+    @endif
+    
+        <!-- Filter Kategori & Search -->
+        <div class="d-flex align-items-center mb-4">
+            <div class="me-2" style="width: 150px;">
+                <select id="kategoriSelect" class="form-select" onchange="location = this.value;">
+                    <option value="{{ route('peminjam.rakbuku') }}" {{ request('kategori') ? '' : 'selected' }}>Semua</option>
+                    @foreach ($kategoriBuku as $kategori)
+                        <option value="{{ route('peminjam.rakbuku', ['kategori' => $kategori->id_kategoribuku]) }}" 
+                            {{ request('kategori') == $kategori->id_kategoribuku ? 'selected' : '' }}>
+                            {{ ucfirst($kategori->kategori_buku) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            <div style="flex: 1;">
+                <input type="text" class="form-control" placeholder="Cari buku..." 
+                       onkeydown="if(event.key === 'Enter') location.href='{{ route('peminjam.rakbuku') }}?search=' + this.value">
+            </div>
+        </div>
 
         <!-- Daftar Buku -->
         <div class="card mt-4">
@@ -57,7 +38,7 @@
                     @forelse ($buku as $item)
                     <div class="col">
                         <div class="card h-100 shadow-sm" style="width: 180px; height: 270px;"> 
-                            <img src="{{ asset('storage/' . $item->cover) }}" class="card-img-top" 
+                            <img src="{{ asset('storage/' . $item->cover) }}"  class="card-img-top" 
                                 style="object-fit: cover; width: 100%; height: 220px; border-top-left-radius: 5px; border-top-right-radius: 5px;" 
                                 alt="{{ $item->judul_buku }}">
                             <div class="card-body text-center p-2">
@@ -67,9 +48,9 @@
                             </div>
                         </div>
                     </div>                    
-                    @empty
+                @empty
                     <p class="text-center">Tidak ada buku dalam kategori ini.</p>
-                    @endforelse
+                @endforelse
                 </div>
             </div>
         </div>

@@ -37,7 +37,7 @@
                                     <td>{{ $buku->id_buku }}</td>
                                     <td>
                                         @if($buku->cover)
-                                            <img src="{{ Storage::url($buku->cover) }}" alt="Cover" style="width: 80px; height: auto; object-fit: cover;">
+                                        <img src="{{ asset('storage/' . $buku->cover) }}" alt="Cover" style="width: 80px; height: auto; object-fit: cover;">
                                         @else
                                             <span class="text-muted">Tidak ada cover</span>
                                         @endif

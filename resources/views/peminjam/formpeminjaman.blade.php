@@ -22,7 +22,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="tgl_pengembalian" class="form-label">Tenggat Pengembalian</label>
-                        <input type="date" class="form-control" name="tgl_pengembalian" value="{{ now()->addDays(1)->format('Y-m-d') }}" readonly>
+                        <input type="date" class="form-control" name="tgl_pengembalian" value="{{ now()->addDays(5)->format('Y-m-d') }}" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="status_peminjaman" class="form-label">Status Peminjaman</label>
