@@ -66,7 +66,12 @@
                         <p>Data Peminjaman</p>
                     </a>
                 </li>
-
+                <li class="nav-item">
+                    <a href="{{ route('admin.laporanpeminjaman') }}" class="nav-link {{ request()->is('admin/laporanpeminjaman') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-clipboard-list"></i>
+                        <p>Data Peminjaman</p>
+                    </a>
+                </li>
                 <!-- Logout -->
                 <li class="nav-item">
                     <form action="{{ route('logout') }}" method="POST">

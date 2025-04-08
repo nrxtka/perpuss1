@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
-use App\Models\DataPeminjam;
+use App\Models\Peminjam;
 use App\Models\DataBuku;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
@@ -18,12 +18,11 @@ class PeminjamanController extends Controller
 
     public function create()
     {
-        $peminjams = DataPeminjam::all();
+        $peminjams = Peminjam::all();
         $bukus = DataBuku::all();
         return view('petugas.createpeminjaman', compact('peminjams', 'bukus'));
     }
 
-    // Simpan data peminjaman ke database
     public function store(Request $request)
     {
         $request->validate([
@@ -48,7 +47,7 @@ class PeminjamanController extends Controller
     public function edit($id)
     {
         $peminjaman = Peminjaman::findOrFail($id);
-        $peminjams = DataPeminjam::all();
+        $peminjams = Peminjam::all();
         $bukus = DataBuku::all();
         return view('petugas.editpeminjaman', compact('peminjaman', 'peminjams', 'bukus'));
     }
@@ -62,7 +61,6 @@ class PeminjamanController extends Controller
             'tgl_pengembalian' => 'nullable|date|after:tgl_peminjam',
             'status_peminjaman' => 'required|in:dipinjam,dikembalikan,belum dikembalikan',
         ]);
-        
 
         $peminjaman = Peminjaman::findOrFail($id);
         $peminjaman->update([
@@ -72,7 +70,7 @@ class PeminjamanController extends Controller
             'tgl_pengembalian' => $request->tgl_pengembalian,
             'status_peminjaman' => $request->status_peminjaman,
         ]);
-        
+
         return redirect()->route('petugas.peminjaman')->with('success', 'Peminjaman berhasil diperbarui!');
     }
 

@@ -27,10 +27,22 @@
 <script src="{{ asset('AdminLTE/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('AdminLTE/dist/js/adminlte.min.js') }}"></script>
+<!-- Bootstrap CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
 <script>
   $(document).ready(function () {
     $('.nav-sidebar').tree(); // Inisialisasi Treeview
   });
 </script>
+<script>
+  $(document).ready(function() {
+      $('#editBukuModal').modal('show'); // Paksa modal muncul buat testing
+  });
+</script>
+
 </body>
 </html>

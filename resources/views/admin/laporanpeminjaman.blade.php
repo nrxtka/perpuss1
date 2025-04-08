@@ -4,16 +4,38 @@
 <div class="content-wrapper">
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mt-4">
-            <h1>Data Peminjaman</h1>
-            <a href="{{ route('admin.createpeminjaman') }}" class="btn btn-primary float-right mb-3">Tambah Peminjaman</a>
+            <h1>Laporan Peminjaman</h1>
         </div>
 
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
+        {{-- Form Filter Tanggal --}}
+        <form method="GET" action="{{ route('admin.laporanpeminjaman') }}">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="dari_tanggal">Dari Tanggal</label>
+                        <input type="date" name="dari_tanggal" class="form-control" id="dari_tanggal" value="{{ request('dari_tanggal') }}">
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label for="sampai_tanggal">Sampai Tanggal</label>
+                        <input type="date" name="sampai_tanggal" class="form-control" id="sampai_tanggal" value="{{ request('sampai_tanggal') }}">
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </div>
+        </form>
 
+        {{-- Jika ada data peminjaman --}}
+        @if ($peminjaman->isNotEmpty())
         <div class="card mt-4">
             <div class="card-body">
+                <div class="d-flex justify-content-end mb-3">
+                    <a href="{{ route('admin.laporanpeminjamanpdf', request()->all()) }}" class="btn btn-danger mr-2">Export PDF</a>
+                </div>
+
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead class="thead-light">
@@ -24,7 +46,6 @@
                                 <th>Tanggal Peminjaman</th>
                                 <th>Tanggal Pengembalian</th>
                                 <th class="text-center">Status Peminjaman</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -32,9 +53,9 @@
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $item->peminjam->nama ?? 'Nama tidak tersedia' }}</td>
-                                <td>{{ $item->buku->judul_buku ?? 'Tidak ada buku' }}</td>                                
-                                <td>{{ $item->tgl_peminjam }}</td>
-                                <td>{{ $item->tgl_pengembalian ?? '-' }}</td>
+                                <td>{{ $item->buku->judul_buku ?? 'Tidak ada buku' }}</td>
+                                <td>{{ date('d-m-Y', strtotime($item->tgl_peminjam)) }}</td>
+                                <td>{{ $item->tgl_pengembalian ? date('d-m-Y', strtotime($item->tgl_pengembalian)) : '-' }}</td>
                                 <td class="text-center">
                                     @if($item->status_peminjaman == 'dipinjam')
                                         <span class="badge bg-warning text-dark">Dipinjam</span>
@@ -44,15 +65,6 @@
                                         <span class="badge bg-danger">Belum Dikembalikan</span>
                                     @endif
                                 </td>
-                                <td>
-                                    <a href="{{ route('admin.editpeminjaman', $item->id_peminjaman) }}" class="btn btn-warning btn-sm">Edit</a>
-
-                                    <form action="{{ route('admin.destroypeminjaman', $item->id_peminjaman) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
-                                    </form>
-                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -60,6 +72,9 @@
                 </div>
             </div>
         </div>
+        @else
+        <div class="alert alert-warning mt-4">Tidak ada data peminjaman pada periode yang dipilih.</div>
+        @endif
     </div>
 </div>
 @endsection

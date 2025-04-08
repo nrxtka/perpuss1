@@ -13,8 +13,10 @@ class DataBukuController extends Controller
     public function index()
     {
         $databuku = DataBuku::with('kategori')->get();
-        return view('admin.databuku', compact('databuku'));
-    }    
+        $kategori = KategoriBuku::all(); // Tambahkan ini
+        return view('admin.databuku', compact('databuku', 'kategori')); // Kirim ke view
+    }
+     
 
     public function create()
     {

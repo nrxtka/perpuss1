@@ -9,7 +9,8 @@ class PeminjamanController extends Controller
 {
     public function index()
     {
-        $peminjaman = Peminjaman::all();
-        return view('admin.Peminjaman', compact('peminjaman'));
+        // Tambahkan eager loading untuk relasi peminjam dan buku
+        $peminjaman = Peminjaman::with(['peminjam', 'buku'])->get();
+        return view('admin.peminjaman', compact('peminjaman'));
     }
 }

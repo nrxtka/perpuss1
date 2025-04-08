@@ -1,84 +1,79 @@
 @extends('layoutspetugas.app')
 
 @section('content')
-<div class="container">
-    <h2>Edit Peminjaman</h2>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <div class="row mt-3">
+            <div class="col-md-8 offset-md-2">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBukuModal">
+                    Edit Buku
+                </button>
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+                <div class="modal fade" id="editBukuModal" tabindex="-1" aria-labelledby="editBukuModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editBukuModalLabel">Edit Buku</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('petugas.updatebuku', $buku->id_buku) }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PUT') 
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+                                    <div class="form-group mb-3">
+                                        <label for="judul_buku" class="form-label">Judul Buku</label>
+                                        <input type="text" name="judul_buku" class="form-control" value="{{ $buku->judul_buku }}" required>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="id_kategoribuku" class="form-label">Kategori</label>
+                                        <select name="id_kategoribuku" id="id_kategoribuku" class="form-control" required>
+                                            <option value="">Pilih Kategori</option>
+                                            @foreach($kategori as $kat)
+                                                <option value="{{ $kat->id_kategoribuku }}" {{ $buku->id_kategoribuku == $kat->id_kategoribuku ? 'selected' : '' }}>
+                                                    {{ $kat->kategori_buku }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="penulis" class="form-label">Penulis</label>
+                                        <input type="text" name="penulis" class="form-control" value="{{ $buku->penulis }}" required>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="penerbit" class="form-label">Penerbit</label>
+                                        <input type="text" name="penerbit" class="form-control" value="{{ $buku->penerbit }}" required>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="tahun_terbit" class="form-label">Tahun Terbit</label>
+                                        <input type="number" name="tahun_terbit" class="form-control" value="{{ $buku->tahun_terbit }}" required>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="stok" class="form-label">Stok</label>
+                                        <input type="number" name="stok" class="form-control" value="{{ $buku->stok }}" required>
+                                    </div>
+
+                                    <div class="form-group mb-3">
+                                        <label for="cover" class="form-label">Cover (Kosongkan jika tidak ingin mengubah)</label>
+                                        <input type="file" name="cover" class="form-control">
+                                        @if($buku->cover)
+                                              <img src="{{ asset('storage/' . $buku->cover) }}" alt="Cover Buku" width="100" class="mt-2"> 
+                                        @endif
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </form>   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    @endif
-
-    <form action="{{ route('petugas.updatepeminjaman', $peminjaman->id_peminjaman) }}" method="POST">
-        @csrf
-        @method('PUT')
-
-        <div class="mb-3">
-            <label for="id_peminjam" class="form-label">Nama Peminjam</label>
-            <select name="id_peminjam" id="id_peminjam" class="form-control" required>
-                <option value="">-- Pilih Peminjam --</option>
-                @foreach ($peminjams as $peminjam)
-                    <option value="{{ $peminjam->id_peminjam }}" 
-                        {{ old('id_peminjam', $peminjaman->id_peminjam) == $peminjam->id_peminjam ? 'selected' : '' }}>
-                        {{ $peminjam->nama }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="id_buku" class="form-label">Judul Buku</label>
-            <select name="id_buku" id="id_buku" class="form-control" required>
-                <option value="">-- Pilih Buku --</option>
-                @foreach ($bukus as $buku)
-                    <option value="{{ $buku->id_buku }}" 
-                        {{ old('id_buku', $peminjaman->id_buku) == $buku->id_buku ? 'selected' : '' }}>
-                        {{ $buku->judul_buku }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="tgl_peminjam" class="form-label">Tanggal Peminjaman</label>
-            <input type="date" name="tgl_peminjam" id="tgl_peminjam" class="form-control" 
-                value="{{ old('tgl_peminjam', $peminjaman->tgl_peminjam) }}" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="tgl_pengembalian" class="form-label">Tanggal Pengembalian</label>
-            <input type="date" name="tgl_pengembalian" id="tgl_pengembalian" class="form-control" 
-                value="{{ old('tgl_pengembalian', $peminjaman->tgl_pengembalian) }}">
-        </div>
-
-        <div class="mb-3">
-            <label for="status_peminjaman" class="form-label">Status Peminjaman</label>
-            <select name="status_peminjaman" id="status_peminjaman" class="form-control" required>
-                <option value="dipinjam" 
-                    {{ old('status_peminjaman', $peminjaman->status_peminjaman) == 'dipinjam' ? 'selected' : '' }}>
-                    Dipinjam
-                </option>
-                <option value="dikembalikan" 
-                    {{ old('status_peminjaman', $peminjaman->status_peminjaman) == 'dikembalikan' ? 'selected' : '' }}>
-                    Dikembalikan
-                </option>
-                <option value="belum dikembalikan" 
-                    {{ old('status_peminjaman', $peminjaman->status_peminjaman) == 'belum dikembalikan' ? 'selected' : '' }}>
-                    Belum Dikembalikan
-                </option>
-            </select>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Update</button>
-    </form>
+    </div>
 </div>
 @endsection

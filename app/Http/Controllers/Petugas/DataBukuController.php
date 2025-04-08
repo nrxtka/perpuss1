@@ -13,8 +13,10 @@ class DataBukuController extends Controller
     public function index()
     {
         $databuku = DataBuku::with('kategori')->get();
-        return view('petugas.databuku', compact('databuku'));
+        $kategori = KategoriBuku::all(); 
+        return view('petugas.databuku', compact('databuku', 'kategori'));
     }
+    
 
     public function create()
     {
@@ -79,14 +81,13 @@ class DataBukuController extends Controller
             }
             $buku->cover = $request->file('cover')->store('covers', 'public');
         }
-    
         $buku->update([
             'judul_buku' => $request->judul_buku,
             'penulis' => $request->penulis,
             'penerbit' => $request->penerbit,
             'tahun_terbit' => $request->tahun_terbit,
-            'stok' => $request->stok, 
-            
+            'stok' => $request->stok,
+            'id_kategoribuku' => $request->id_kategoribuku, // Tambahin ini biar kategori ikut ke-update
         ]);
         return redirect()->route('petugas.databuku')->with('success', 'Buku berhasil diperbarui!');
     }

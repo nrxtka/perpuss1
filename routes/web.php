@@ -19,6 +19,11 @@ use App\Http\Controllers\Petugas\PeminjamanController as PetugasPeminjamanContro
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Petugas\KategoriBukuController as PetugasKategoriBukuController;
 use App\Http\Controllers\Admin\KategoriBukuController as AdminKategoriBukuController;
+use App\Http\Controllers\Admin\LaporanPeminjamanController;
+
+Route::get('/laporan-peminjaman', [LaporanPeminjamanController::class, 'index'])->name('admin.laporanpeminjaman');
+Route::get('/laporan-peminjaman/export-pdf', [LaporanPeminjamanController::class, 'exportPDF'])->name('admin.laporanpeminjamanpdf');
+Route::get('/laporan-peminjaman/export-excel', [LaporanPeminjamanController::class, 'exportExcel'])->name('admin.laporanpeminjaman.excel');
 
 // Halaman Pilih
 Route::view('/', 'pilih.index')->name('pilih.index');
@@ -147,6 +152,9 @@ Route::prefix('petugas')->group(function () {
 });
 
 Route::get('/admin/peminjaman', [AdminPeminjamanController::class, 'index'])->name('admin.peminjaman');
+Route::get('/peminjaman/create', [AdminPeminjamanController::class, 'create'])->name('admin.createpeminjaman');
+Route::get('/peminjaman/{id}/edit', [AdminPeminjamanController::class, 'edit'])->name('admin.editpeminjaman');
+Route::delete('/peminjaman/{id}', [AdminPeminjamanController::class, 'destroy'])->name('admin.destroypeminjaman');
 
 
 Route::get('/admin/datapetugas', [DataPetugasController::class, 'index'])->name('admin.datapetugas');

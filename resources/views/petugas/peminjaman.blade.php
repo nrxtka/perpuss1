@@ -31,7 +31,7 @@
                             @foreach($peminjaman as $key => $p)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td>{{ $p->peminjam->nama }}</td>
+                                <td>{{ $p->peminjam->nama ?? 'Nama tidak tersedia' }}</td>
                                 <td>{{ $p->buku ->judul_buku ?? 'Tidak ada buku' }}</td>
                                 <td>{{ $p->tgl_peminjam }}</td>
                                 <td>{{ $p->tgl_pengembalian ?? '-' }}</td>
