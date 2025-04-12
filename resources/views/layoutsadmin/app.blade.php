@@ -15,8 +15,9 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-    <!-- Include Navbar -->
+    <!-- Include Navbar dan Sidebar -->
     @include('layoutsadmin.navbar')
+    @include('layoutsadmin.sidebar')
 
     <!-- Yield Content -->
     @yield('content')
@@ -27,9 +28,6 @@
 <script src="{{ asset('AdminLTE/plugins/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('AdminLTE/dist/js/adminlte.min.js') }}"></script>
-<script>
-<!-- Bootstrap CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
 
 <script>
     $(document).ready(function () {
@@ -38,9 +36,13 @@
         }
     });
 
+    // Event log modal buka
     document.addEventListener('show.bs.modal', function (event) {
         console.log('Modal terbuka:', event.target.id);
     });
 </script>
+
+<!-- Stack untuk script tambahan -->
+@stack('scripts')
 </body>
 </html>

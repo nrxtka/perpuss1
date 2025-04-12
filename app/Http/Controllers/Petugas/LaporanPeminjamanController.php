@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Petugas;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -35,7 +35,7 @@ class LaporanPeminjamanController extends Controller
 
         $peminjaman = $query->with(['peminjam', 'buku'])->get();
 
-        return view('admin.laporanpeminjaman', compact('peminjaman', 'dari_tanggal', 'sampai_tanggal', 'status_peminjaman'));
+        return view('petugas.laporanpeminjaman', compact('peminjaman', 'dari_tanggal', 'sampai_tanggal', 'status_peminjaman'));
     }
 
     public function exportPDF(Request $request)

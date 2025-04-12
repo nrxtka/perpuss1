@@ -17,6 +17,7 @@
 
     <!-- Include Navbar -->
     @include('layoutspetugas.navbar')
+    @include('layoutspetugas.sidebar')
 
     <!-- Yield Content -->
     @yield('content')

@@ -1,89 +1,72 @@
-<!-- resources/views/layouts/navbar.blade.php -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="#" class="brand-link">
-        <span class="brand-text font-weight-light">Admin</span>
-    </a>
-    <div class="sidebar">
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="info">
-                <a href="{{ route('admin.index') }}" class="d-block">Perpussil</a>
+<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Sidebar toggle -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+        </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+
+        <!-- Notifikasi Buku -->
+        <li class="nav-item dropdown no-arrow mx-1">
+            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdownBuku" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-book fa-fw"></i>
+                @php
+                    $jumlahNotif = count($bukuHabis) + count($bukuHampirHabis);
+                @endphp
+                @if ($jumlahNotif > 0)
+                    <span class="badge badge-danger badge-counter">{{ $jumlahNotif }}</span>
+                @endif
+            </a>
+            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdownBuku">
+                <h6 class="dropdown-header">Pemberitahuan Stok Buku</h6>
+
+                @foreach ($bukuHabis as $buku)
+                    <div class="dropdown-item d-flex align-items-center">
+                        <div class="mr-3">
+                            <div class="icon-circle bg-danger">
+                                <i class="fas fa-book-dead text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="small text-gray-500">Stok: 0</div>
+                            <span class="font-weight-bold">{{ $buku->judul_buku }}</span>
+                        </div>
+                    </div>
+                @endforeach
+
+                @foreach ($bukuHampirHabis as $buku)
+                    <div class="dropdown-item d-flex align-items-center">
+                        <div class="mr-3">
+                            <div class="icon-circle bg-warning">
+                                <i class="fas fa-exclamation text-white"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="small text-gray-500">Stok: {{ $buku->stok }}</div>
+                            <span class="font-weight-bold">{{ $buku->judul_buku }}</span>
+                        </div>
+                    </div>
+                @endforeach
+
+                @if ($jumlahNotif == 0)
+                    <div class="dropdown-item text-center small text-gray-500">Tidak ada notifikasi</div>
+                @endif
             </div>
-        </div>
+        </li>
 
-        <!-- Sidebar Menu -->
-        <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      <!-- Logout Icon -->
+<li class="nav-item mx-1">
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-link nav-link" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+        </button>
+    </form>
+</li>
 
-                <!-- Data -->
-                <li class="nav-item has-treeview {{ request()->is('admin/dataadmin') ? 'menu-open' : '' }}">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-folder"></i>
-                        <p>
-                            Data
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('admin.dataadmin') }}" class="nav-link {{ request()->is('admin/dataadmin') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Data Admin</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.datapetugas') }}" class="nav-link {{ request()->is('admin/datapetugas') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Data Petugas</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.datapeminjam') }}" class="nav-link {{ request()->is('admin/datapeminjam') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Data Peminjam</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.databuku') }}" class="nav-link {{ request()->is('admin/databuku') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Data Buku</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <!-- Kategori Buku -->
-                <li class="nav-item">
-                    <a href="{{ route('admin.kategoribuku') }}" class="nav-link {{ request()->is('admin/kategoribuku') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-book"></i>
-                        <p>Kategori Buku</p>
-                    </a>
-                </li>
-
-                <!-- Data Peminjaman -->
-                <li class="nav-item">
-                    <a href="{{ route('admin.peminjaman') }}" class="nav-link {{ request()->is('admin/peminjaman') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-clipboard-list"></i>
-                        <p>Data Peminjaman</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.laporanpeminjaman') }}" class="nav-link {{ request()->is('admin/laporanpeminjaman') ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-clipboard-list"></i>
-                        <p>Data Peminjaman</p>
-                    </a>
-                </li>
-                <!-- Logout -->
-                <li class="nav-item">
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="nav-link btn btn-link text-left">
-                            <i class="nav-icon fas fa-sign-out-alt"></i>
-                            <p>Logout</p>
-                        </button>
-                    </form>
-                </li>
-
-            </ul>
-        </nav>
-    </div>
-</aside>
+        
+    </ul>
+</nav>

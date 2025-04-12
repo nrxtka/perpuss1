@@ -1,4 +1,4 @@
-@extends('layoutsadmin.app')
+@extends('layoutspetugas.app')
 
 @section('content')
 <div class="content-wrapper">
@@ -27,7 +27,7 @@
         </div>
 
         {{-- Form Filter Tanggal dan Status --}}
-        <form method="GET" action="{{ route('admin.laporanpeminjaman') }}" class="mb-4">
+        <form method="GET" action="{{ route('petugas.laporanpeminjaman') }}" class="mb-4">
             <div class="row g-2 align-items-end">
                 <div class="col-md-3">
                     <label for="dari_tanggal"><strong>Dari Tanggal</strong></label>
@@ -51,7 +51,7 @@
                         <button type="submit" class="btn btn-primary px-4 py-2">Filter</button>
                     </div>
                     <div>
-                        <a href="{{ route('admin.laporanpeminjamanpdf', request()->all()) }}" class="btn btn-danger px-4 py-2">Export PDF</a>
+                        <a href="{{ route('petugas.laporanpeminjamanpdf', request()->all()) }}" class="btn btn-danger px-4 py-2">Export PDF</a>
                     </div>
                 </div>                                              
             </div>

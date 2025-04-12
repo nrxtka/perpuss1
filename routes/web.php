@@ -19,18 +19,28 @@ use App\Http\Controllers\Petugas\PeminjamanController as PetugasPeminjamanContro
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Petugas\KategoriBukuController as PetugasKategoriBukuController;
 use App\Http\Controllers\Admin\KategoriBukuController as AdminKategoriBukuController;
-use App\Http\Controllers\Admin\LaporanPeminjamanController;
+use App\Http\Controllers\Admin\IndexController;
+use App\Http\Controllers\Petugas\DashboardPetugasController;
+use App\Http\Controllers\Admin\LaporanPeminjamanController as AdminLaporanPeminjamanController;
+use App\Http\Controllers\Petugas\LaporanPeminjamanController as PetugasLaporanPeminjamanController;
+Route::get('/admin/index', [IndexController::class, 'index'])->name('admin.index');
 
-Route::get('/laporan-peminjaman', [LaporanPeminjamanController::class, 'index'])->name('admin.laporanpeminjaman');
-Route::get('/laporan-peminjaman/export-pdf', [LaporanPeminjamanController::class, 'exportPDF'])->name('admin.laporanpeminjamanpdf');
-Route::get('/laporan-peminjaman/export-excel', [LaporanPeminjamanController::class, 'exportExcel'])->name('admin.laporanpeminjaman.excel');
 
+Route::get('/admin/laporan-peminjaman', [AdminLaporanPeminjamanController::class, 'index'])->name('admin.laporanpeminjaman');
+Route::get('/admin/laporan-peminjaman/export-pdf', [AdminLaporanPeminjamanController::class, 'exportPDF'])->name('admin.laporanpeminjamanpdf');
+Route::get('/admin/laporan-peminjaman/export-excel', [AdminLaporanPeminjamanController::class, 'exportExcel'])->name('admin.laporanpeminjaman.excel');
+
+Route::get('/petugas/laporan-peminjaman', [PetugasLaporanPeminjamanController::class, 'index'])->name('petugas.laporanpeminjaman');
+Route::get('/petugas/laporan-peminjaman/export-pdf', [PetugasLaporanPeminjamanController::class, 'exportPDF'])->name('petugas.laporanpeminjamanpdf');
+Route::get('/petugas/laporan-peminjaman/export-excel', [PetugasLaporanPeminjamanController::class, 'exportExcel'])->name('petugas.laporanpeminjaman.excel');
 // Halaman Pilih
 Route::view('/', 'pilih.index')->name('pilih.index');
 Route::view('/pilih', 'pilih.index')->name('pilih.index');
 
 // Halaman Login
 Route::view('/login/petugas', 'login.petugas')->name('login.petugas');
+Route::view('/login/admin', 'login.admin')->name('login.admin');
+
 
 
 
@@ -67,12 +77,7 @@ Route::get('/petugas/login', [PetugasLoginController::class, 'showLoginForm'])->
 Route::post('/petugas/login', [PetugasLoginController::class, 'login']);
 Route::get('/petugas/logout', [PetugasLoginController::class, 'logout'])->name('petugas.logout');
 
-Route::get('/petugas/dashboard', function () {
-    if (!session('petugas')) {
-        return redirect()->route('petugas.login');
-    }
-    return view('petugas.dashboard');
-})->name('petugas.dashboard');
+Route::get('/petugas/dashboard', [DashboardPetugasController::class, 'index'])->name('petugas.dashboard');
 
 
 // Data Admin Route
@@ -116,12 +121,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 Route::prefix('petugas')->name('petugas.')->group(function () {
+    // route databuku sudah ada
     Route::get('databuku', [PetugasBukuController::class, 'index'])->name('databuku');
     Route::get('databuku/create', [PetugasBukuController::class, 'create'])->name('createbuku');
     Route::post('databuku', [PetugasBukuController::class, 'store'])->name('storebuku');
     Route::get('databuku/{id_buku}/edit', [PetugasBukuController::class, 'edit'])->name('editbuku');
     Route::put('databuku/{id_buku}', [PetugasBukuController::class, 'update'])->name('updatebuku');
     Route::delete('databuku/{id_buku}', [PetugasBukuController::class, 'destroy'])->name('deletebuku');
+
+    // tambahkan route untuk peminjaman
+    Route::get('datapeminjaman', [PeminjamanController::class, 'index'])->name('datapeminjaman');
 });
 
 Route::prefix('admin')->group(function () {
@@ -158,7 +167,7 @@ Route::delete('/peminjaman/{id}', [AdminPeminjamanController::class, 'destroy'])
 
 
 Route::get('/admin/datapetugas', [DataPetugasController::class, 'index'])->name('admin.datapetugas');
-Route::get('/admin/index', [DataAdminController::class, 'index'])->name('admin.index');
+
 
 // Route untuk menampilkan form registrasi
 Route::get('/register', [RegisterController::class, 'index'])->name('register.index');
@@ -166,13 +175,7 @@ Route::get('/register', [RegisterController::class, 'index'])->name('register.in
 // Route untuk menyimpan data registrasi
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 
-// Admin Index Route (Authenticated Access)
-Route::get('/admin/index', function () {
-    if (!session()->has('admin')) {
-        return redirect()->route('admin.login.form')->with('LoginError', 'Silahkan login dulu!');
-    }
-    return view('admin.index');
-})->name('admin.index');
+
 
 // Logout Route
 Route::post('/logout', function () {

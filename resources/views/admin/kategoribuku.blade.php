@@ -31,9 +31,9 @@
                                     <td>{{ $kategori->id_kategoribuku }}</td>
                                     <td>{{ $kategori->kategori_buku }}</td>
                                     <td>
-                                        <a href="{{ route('admin.editkategori', $kategori->id_kategoribuku) }}" class="btn btn-info btn-sm">
+                                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#editKategoriModal{{ $kategori->id_kategoribuku }}">
                                             <i class="fas fa-edit"></i> Edit
-                                        </a>
+                                        </button>                                        
                                         <form action="{{ route('admin.deletekategori', $kategori->id_kategoribuku) }}" method="POST" style="display: inline;">
                                             @csrf
                                             @method('DELETE')
@@ -41,8 +41,11 @@
                                                 <i class="fas fa-trash"></i> Delete
                                             </button>
                                         </form>
-                                    </td>                                    
+                                    </td>
                                 </tr>
+
+                                {{-- Modal Edit dipanggil dari file terpisah --}}
+                                @include('admin.editkategori', ['kategori' => $kategori])
                             @endforeach
                         </tbody>
                     </table>

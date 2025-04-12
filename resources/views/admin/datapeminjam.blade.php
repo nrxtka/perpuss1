@@ -31,9 +31,9 @@
                                     <td>{{ $peminjam->username }}</td>
                                     <td>{{ $peminjam->alamat }}</td>
                                     <td>
-                                        <a href="{{ route('admin.editpeminjam', $peminjam->id_peminjam) }}" class="btn btn-info btn-sm">
+                                        <button class="btn btn-info btn-sm editPeminjamBtn" data-id="{{ $peminjam->id_peminjam }}">
                                             <i class="fas fa-edit"></i> Edit
-                                        </a>
+                                        </button>
                                         <form action="{{ route('admin.deletepeminjam', $peminjam->id_peminjam) }}" method="POST" style="display: inline;">
                                             @csrf
                                             @method('DELETE')
@@ -51,4 +51,28 @@
         </div>
     </div>
 </div>
+
+{{-- Modal Edit --}}
+<div class="modal fade" id="editPeminjamModal" tabindex="-1" role="dialog" aria-labelledby="editPeminjamModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="editPeminjamModalContent">
+            <!-- Isi dari modal akan dimuat via Ajax -->
+        </div>
+    </div>
+</div>
+
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function () {
+        $('.editPeminjamBtn').on('click', function () {
+            var peminjamId = $(this).data('id');
+            $.get('/admin/datapeminjam/' + peminjamId + '/edit', function (data) {
+                $('#editPeminjamModalContent').html(data);
+                $('#editPeminjamModal').modal('show');
+            });
+        });
+    });
+</script>
+@endpush
