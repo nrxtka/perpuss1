@@ -6,11 +6,6 @@ use Illuminate\Http\Request;
 
 class PeminjamController extends Controller
 {
-    public function dashboard()
-    {
-        return view('peminjam.dashboard');
-    }
-
     public function rakbuku()
     {
         return view('peminjam.rakbuku');

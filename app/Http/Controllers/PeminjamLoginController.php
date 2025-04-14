@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -7,11 +8,13 @@ use Illuminate\Support\Facades\Hash;
 
 class PeminjamLoginController extends Controller
 {
+    // Menampilkan form login
     public function showLoginForm()
     {
         return view('login.peminjam');
     }
 
+    // Proses login
     public function login(Request $request)
     {
         // Validasi input
@@ -24,34 +27,39 @@ class PeminjamLoginController extends Controller
         $peminjam = Peminjam::where('username', $request->username)->first();
 
         // Cek password
-        if ($peminjam && password_verify($request->password, $peminjam->password)) {
-            // Simpan data peminjam di session
+        if ($peminjam && Hash::check($request->password, $peminjam->password)) {
+            // Simpan ID peminjam di session
             session([
-                'peminjam_id' => $peminjam->id,
+                'id_peminjam' => $peminjam->id_peminjam,  // Ganti dari peminjam_id ke id_peminjam
                 'peminjam_nama' => $peminjam->nama,
                 'peminjam_username' => $peminjam->username,
                 'peminjam_email' => $peminjam->email,
                 'is_logged_in' => true, // Tanda bahwa user sudah login
             ]);
 
+            // Redirect ke dashboard peminjam
             return redirect()->route('peminjam.dashboard');
         }
 
+        // Jika username atau password salah
         return back()->with('LoginError', 'Username atau Password salah!');
     }
 
+    // Proses logout
     public function logout()
     {
-        // Hapus semua session yang berhubungan dengan peminjam
+        // Hapus session yang berhubungan dengan peminjam
         session()->flush();
         return redirect()->route('login.peminjam');
     }
 
+    // Menampilkan form registrasi
     public function showRegisterForm()
     {
         return view('register.peminjam');
     }
 
+    // Proses registrasi
     public function register(Request $request)
     {
         // Validasi input

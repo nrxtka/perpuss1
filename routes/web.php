@@ -23,6 +23,10 @@ use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Petugas\DashboardPetugasController;
 use App\Http\Controllers\Admin\LaporanPeminjamanController as AdminLaporanPeminjamanController;
 use App\Http\Controllers\Petugas\LaporanPeminjamanController as PetugasLaporanPeminjamanController;
+use App\Http\Controllers\Peminjam\DashboardController;
+
+Route::get('/peminjam/dashboard', [DashboardController::class, 'index'])->name('peminjam.dashboard');
+
 Route::get('/admin/index', [IndexController::class, 'index'])->name('admin.index');
 
 
@@ -52,7 +56,7 @@ Route::prefix('peminjam')->group(function () {
     Route::get('/register', [PeminjamLoginController::class, 'showRegisterForm'])->name('register.peminjam');
     Route::post('/register', [PeminjamLoginController::class, 'register']);
 
-    Route::get('/dashboard', [PeminjamController::class, 'dashboard'])->name('peminjam.dashboard');
+  
 
     // Rak Buku -> Pakai RakBukuController
     Route::get('/rakbuku', [RakBukuController::class, 'index'])->name('peminjam.rakbuku');
@@ -84,9 +88,11 @@ Route::get('/petugas/dashboard', [DashboardPetugasController::class, 'index'])->
 Route::prefix('admin')->group(function () {
     Route::get('/dataadmin', [DataAdminController::class, 'index'])->name('admin.dataadmin');
     Route::get('/createadmin', [DataAdminController::class, 'create'])->name('admin.createadmin');
+    Route::get('/{id}/edit', [DataAdminController::class, 'edit'])
+        ->where('id', '[0-9]+')
+        ->name('admin.editadmin');    
     Route::post('/storeadmin', [DataAdminController::class, 'store'])->name('admin.storeadmin');
-    Route::get('/{id}/edit', [DataAdminController::class, 'edit'])->name('admin.editadmin'); 
-    Route::put('/{id}/update', [DataAdminController::class, 'update'])->name('admin.updateadmin');
+    Route::put('/admin/{id}', [DataAdminController::class, 'update'])->name('admin.updateadmin');
     Route::delete('/{id}', [DataAdminController::class, 'destroy'])->name('admin.deleteadmin');
 });
 

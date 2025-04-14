@@ -11,9 +11,21 @@
         <div class="row mt-3">
             <div class="col-12"> 
                 <div class="card">
+                    <!-- Header Card: Judul & Tombol Tambah Buku -->
                     <div class="card-header">
-                        <h3>Data Buku</h3>
+                        <div class="row w-100 align-items-center">
+                            <div class="col">
+                                <h3 class="mb-0">Data Buku</h3>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahBukuModal">
+                                    <i class="fas fa-plus"></i> Tambah Buku
+                                </button>
+                            </div>
+                        </div>
                     </div>
+                    
+                    <!-- Tabel Data Buku -->
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered table-striped align-middle">
@@ -48,10 +60,12 @@
                                                 @endif
                                             </td>
                                             <td class="text-center">
+                                                <!-- Tombol Edit -->
                                                 <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#editBukuModal{{ $buku->id_buku }}">
                                                     <i class="fas fa-edit"></i> Edit
                                                 </button>
 
+                                                <!-- Form Hapus -->
                                                 <form action="{{ route('admin.deletebuku', $buku->id_buku) }}" method="POST" style="display: inline;">
                                                     @csrf
                                                     @method('DELETE')
@@ -67,27 +81,14 @@
                                     @endforeach
                                 </tbody>
                             </table>
-
-                            <script>
-                                document.addEventListener('DOMContentLoaded', function () {
-                                    var editButtons = document.querySelectorAll('[data-bs-toggle="modal"]');
-                                    editButtons.forEach(function (btn) {
-                                        btn.addEventListener('click', function () {
-                                            var target = this.getAttribute('data-bs-target');
-                                            var modal = document.querySelector(target);
-                                            var bsModal = new bootstrap.Modal(modal);
-                                            bsModal.show();
-                                        });
-                                    });
-                                });
-                            </script>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        {{-- Modal Tambah Buku --}}
+        @include('admin.createbuku', ['kategori' => $kategori])
     </div>
 </div>
-
 @endsection
