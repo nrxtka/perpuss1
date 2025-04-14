@@ -17,6 +17,7 @@
 
     <!-- Include Navbar -->
     @include('layoutspeminjam.navbar')
+    @include('layoutspeminjam.sidebar')
 
     <!-- Yield Content -->
     @yield('content')

@@ -1,49 +1,37 @@
-@extends('layoutsadmin.app')
+<div class="modal fade" id="editPeminjamanModal{{ $item->id_peminjaman }}" tabindex="-1" role="dialog" aria-labelledby="editPeminjamanLabel{{ $item->id_peminjaman }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
 
-@section('content')
-<div class="content-wrapper">
-    <div class="container-fluid">
-        <div class="row mt-3">
-            <div class="col-md-12">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('admin.peminjaman') }}">Data Peminjaman</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Edit Peminjaman</li>
-                    </ol>
-                </nav>
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Status Peminjaman</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-        </div>
 
-        <div class="card">
-            <div class="card-header bg-warning text-white">
-                <h5 class="mb-0">Edit Peminjaman</h5>
-            </div>
-            <div class="card-body">
-                <form action="{{ route('admin.updatepeminjaman', $peminjaman->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
+            <form action="{{ route('admin.peminjaman.update', $item->id_peminjaman) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
                     <div class="form-group">
-                        <label for="nama_peminjam">Nama Peminjam</label>
-                        <input type="text" name="nama_peminjam" id="nama_peminjam" class="form-control" value="{{ $peminjaman->nama_peminjam }}" required>
+                        <label for="status_peminjaman">Status Peminjaman</label>
+                        <select name="status_peminjaman" class="form-control" required>
+                            <option value="dipinjam" {{ $item->status_peminjaman == 'dipinjam' ? 'selected' : '' }}>Dipinjam</option>
+                            <option value="dikembalikan" {{ $item->status_peminjaman == 'dikembalikan' ? 'selected' : '' }}>Dikembalikan</option>
+                            <option value="belum dikembalikan" {{ $item->status_peminjaman == 'belum dikembalikan' ? 'selected' : '' }}>Belum Dikembalikan</option>
+                        </select>                        
                     </div>
+                </div>
 
-                    <div class="form-group">
-                        <label for="judul_buku">Judul Buku</label>
-                        <input type="text" name="judul_buku" id="judul_buku" class="form-control" value="{{ $peminjaman->judul_buku }}" required>
-                    </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                </div>
+            </form>
 
-                    <div class="form-group">
-                        <label for="tgl_peminjam">Tanggal Peminjaman</label>
-                        <input type="date" name="tgl_peminjam" id="tgl_peminjam" class="form-control" value="{{ $peminjaman->tgl_peminjam }}" required>
-                    </div>
-
-                    <div class="d-flex justify-content-between">
-                        <a href="{{ route('admin.peminjaman') }}" class="btn btn-secondary">Batal</a>
-                        <button type="submit" class="btn btn-warning">Update</button>
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
 </div>
-@endsection
+
+    
+    @endforeach

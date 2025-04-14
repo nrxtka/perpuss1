@@ -131,6 +131,8 @@ Route::prefix('petugas')->name('petugas.')->group(function () {
 
     // tambahkan route untuk peminjaman
     Route::get('datapeminjaman', [PeminjamanController::class, 'index'])->name('datapeminjaman');
+    
+
 });
 
 Route::prefix('admin')->group(function () {
@@ -160,10 +162,13 @@ Route::prefix('petugas')->group(function () {
     Route::delete('/peminjaman/{id}', [PetugasPeminjamanController::class, 'destroy'])->name('petugas.destroypeminjaman');
 });
 
-Route::get('/admin/peminjaman', [AdminPeminjamanController::class, 'index'])->name('admin.peminjaman');
-Route::get('/peminjaman/create', [AdminPeminjamanController::class, 'create'])->name('admin.createpeminjaman');
-Route::get('/peminjaman/{id}/edit', [AdminPeminjamanController::class, 'edit'])->name('admin.editpeminjaman');
-Route::delete('/peminjaman/{id}', [AdminPeminjamanController::class, 'destroy'])->name('admin.destroypeminjaman');
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/peminjaman', [AdminPeminjamanController::class, 'index'])->name('peminjaman');
+    Route::get('/peminjaman/create', [AdminPeminjamanController::class, 'create'])->name('createpeminjaman'); 
+    Route::post('/peminjaman/store', [AdminPeminjamanController::class, 'store'])->name('storepeminjaman');
+    Route::put('/peminjaman/{id}', [AdminPeminjamanController::class, 'update'])->name('peminjaman.update');
+    Route::delete('/peminjaman/{id}', [AdminPeminjamanController::class, 'destroy'])->name('peminjaman.destroy');
+});
 
 
 Route::get('/admin/datapetugas', [DataPetugasController::class, 'index'])->name('admin.datapetugas');

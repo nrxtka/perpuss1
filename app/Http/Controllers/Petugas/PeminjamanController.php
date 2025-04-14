@@ -41,7 +41,7 @@ class PeminjamanController extends Controller
             'status_peminjaman' => $request->status_peminjaman,
         ]);
 
-        return redirect()->route('petugas.createpeminjaman')->with('success', 'Peminjaman berhasil ditambahkan.');
+        return redirect()->route('petugas.peminjaman')->with('success', 'Peminjaman berhasil ditambahkan.');
     }
 
     public function edit($id)

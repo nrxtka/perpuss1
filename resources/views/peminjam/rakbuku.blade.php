@@ -31,29 +31,30 @@
             </div>
         </div>
 
-        <!-- Daftar Buku -->
-        <div class="card mt-4">
-            <div class="card-body">
-                <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3"> 
-                    @forelse ($buku as $item)
-                    <div class="col">
-                        <div class="card h-100 shadow-sm" style="width: 180px; height: 270px;"> 
-                            <img src="{{ asset('storage/' . $item->cover) }}"  class="card-img-top" 
-                                style="object-fit: cover; width: 100%; height: 220px; border-top-left-radius: 5px; border-top-right-radius: 5px;" 
-                                alt="{{ $item->judul_buku }}">
-                            <div class="card-body text-center p-2">
-                                <h6 class="card-title text-truncate">{{ $item->judul_buku }}</h6>
-                                <p class="card-text text-muted small mb-2">Kategori: {{ $item->kategori->kategori_buku ?? 'Tidak ada' }}</p>
-                                <a href="{{ route('peminjam.detailbuku', $item->id_buku) }}" class="btn btn-success btn-sm">Detail</a>
-                            </div>
-                        </div>
-                    </div>                    
-                @empty
-                    <p class="text-center">Tidak ada buku dalam kategori ini.</p>
-                @endforelse
+       <!-- Daftar Buku -->
+<div class="card mt-4">
+    <div class="card-body">
+        <div class="row justify-content-center g-4"> 
+            @forelse ($buku as $item)
+            <div class="col-6 col-md-4 col-lg-3 d-flex justify-content-center">
+                <div class="card h-100 shadow-sm" style="width: 180px; height: 270px;"> 
+                    <img src="{{ asset('storage/' . $item->cover) }}" class="card-img-top" 
+                        style="object-fit: cover; width: 100%; height: 220px; border-top-left-radius: 5px; border-top-right-radius: 5px;" 
+                        alt="{{ $item->judul_buku }}">
+                    <div class="card-body text-center p-2">
+                        <h6 class="card-title text-truncate">{{ $item->judul_buku }}</h6>
+                        <p class="card-text text-muted small mb-2">Kategori: {{ $item->kategori->kategori_buku ?? 'Tidak ada' }}</p>
+                        <a href="{{ route('peminjam.detailbuku', $item->id_buku) }}" class="btn btn-success btn-sm">Detail</a>
+                    </div>
                 </div>
-            </div>
+            </div>                    
+            @empty
+                <p class="text-center">Tidak ada buku dalam kategori ini.</p>
+            @endforelse
         </div>
+    </div>
+</div>
+
     </div>
 </div>
 @endsection
